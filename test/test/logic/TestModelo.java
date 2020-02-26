@@ -21,9 +21,6 @@ public class TestModelo {
 	public void setUp1() 
 	{
 		modelo= new Modelo();
-		arregloA = new Integer[1000000];
-		arregloD = new Integer[1000000];
-		arregloO = new Integer[1000000];
 	}
 
 	public void setUp2() 
@@ -33,10 +30,13 @@ public class TestModelo {
 
 	public void setUp3()
 	{
+		arregloA = new Integer[1000000];
+		arregloD = new Integer[1000000];
+		arregloO = new Integer[1000000];
 		for(int i=0 ; i<1000000 ; i++)
 		{
 			arregloA[i]=i;
-			arregloD[1000000-i-1]=1000000-i;
+			arregloD[1000000-i-1]=1000000-i-1;
 			arregloO[i] = (int) Math.random()*1000000;
 		}
 	}
@@ -69,33 +69,50 @@ public class TestModelo {
 		long endTimeO = System.currentTimeMillis();          
 		long durationO = endTimeO - startTimeO; 
 		System.out.println("Shell Sort Aleatorio: " + durationO);
+		
+		System.out.println(arregloA.toString());
+		
+		for(int i = 0; i<100 ; i++)
+		{
+//			assertEquals(i,(int) arregloA[i]);
+//			assertEquals(i,(int) arregloD[i]);
+//			assertEquals(i,(int) arregloO[i]);
+			System.out.println(arregloA[i] +"'"+ arregloD[i] +"'"+ arregloO[i]);
+		}
 	}
 	
 	@Test
 	public void testMergeSort()
 	{
+		setUp3();
 		Integer[] aux1 = arregloA;
 		Integer[] aux2 = arregloD;
 		Integer[] aux3 = arregloO;
-		setUp3();
 		
 		long startTimeA = System.currentTimeMillis();
-		modelo.mergeSort(arregloA, aux1, 0, 9999);
+		modelo.mergeSort(arregloA, aux1, 0, 999999);
 		long endTimeA = System.currentTimeMillis();          
 		long durationA = endTimeA - startTimeA; 
 		System.out.println("Merge Sort Ascendente: " + durationA);
 		
 		long startTimeD = System.currentTimeMillis();
-		modelo.mergeSort(arregloD, aux2, 0, 9999);
+		modelo.mergeSort(arregloD, aux2, 0, 999999);
 		long endTimeD = System.currentTimeMillis();          
 		long durationD = endTimeD - startTimeD; 
 		System.out.println("Merge Sort Descendente: " + durationD);
 		
 		long startTimeO = System.currentTimeMillis();
-		modelo.mergeSort(arregloO, aux3, 0, 9999);
+		modelo.mergeSort(arregloO, aux3, 0, 999999);
 		long endTimeO = System.currentTimeMillis();          
 		long durationO = endTimeO - startTimeO;
 		System.out.println("Merge Sort Aleatorio: " + durationO);
+		
+//		for(int i = 0; i<1000000 ; i++)
+//		{
+//			assertEquals(i,(int) arregloA[i]);
+//			assertEquals(i,(int) arregloD[i]);
+//			assertEquals(i,(int) arregloO[i]);
+//		}
 	}
 	
 	@Test
@@ -119,5 +136,12 @@ public class TestModelo {
 		long endTimeO = System.currentTimeMillis();          
 		long durationO = endTimeO - startTimeO; 
 		System.out.println("Quick Sort Aleatorio: " + durationO);
+		
+//		for(int i = 0; i<1000000 ; i++)
+//		{
+//			assertEquals(i,(int) arregloA[i]);
+//			assertEquals(i,(int) arregloD[i]);
+//			assertEquals(i,(int) arregloO[i]);
+//		}
 	}
 }
