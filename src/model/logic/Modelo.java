@@ -1,8 +1,6 @@
 package model.logic;
 
 import java.util.Date;
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +20,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+
+import StdRandom.StdRandom;
+import model.data_structures.Comparendo;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.Nodo;
 /**
@@ -28,7 +30,7 @@ import model.data_structures.Nodo;
  *
  */
 public class Modelo
-{
+{	
 	/**
 	 * Estrutura de datos que tendrá los comparendos
 	 */
@@ -185,11 +187,12 @@ public class Modelo
 	 * @return Infraccion leida del archivo
 	 * @throws IOException si no se puede leer el archivo
 	 */
-	public Infraccion readFeatures(JsonReader reader) throws IOException 
+	public Comparendo readFeatures(JsonReader reader) throws IOException 
 	{
 		String type = null;
 		String[] datos = null;
 		ArrayList<Double> geo = null;
+		SimpleDateFormat parser=new SimpleDateFormat("yyyy/MM/dd");
 
 		reader.beginObject();
 		while (reader.hasNext()) 
@@ -215,7 +218,7 @@ public class Modelo
 		reader.endObject();
 		try
 		{
-			Infraccion retorno = new Infraccion(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],geo.get(0),geo.get(1));
+			Comparendo retorno = new Comparendo(Integer.parseInt(datos[0]),parser.parse(datos[1]),datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],geo.get(0),geo.get(1));
 			return retorno;
 		}
 		catch(Exception e)
@@ -330,69 +333,104 @@ public class Modelo
 		return doubles;
 	}
 	
-	/**
-	 * Busca una infracción en la lista con un ID recibido por parámetro
-	 * @param pId ID de la infracción a buscar
-	 * @return Infracción buscada, null si no es encontrada
-	 */
-	public Infraccion buscar(int pId)
+	public Comparable[] copiarComparendos()
 	{
-		Infraccion buscada = null;
-		for(Nodo e = lista.darPrimero() ; e!=null ; e = e.darSiguiente())
+		Comparable[] retorno = new Comparable[lista.darTamano()];
+		int i = 0;
+		for(Nodo n = lista.darPrimero() ; n!= null ; n = n.darSiguiente())
 		{
-			Infraccion actual = (Infraccion) e.darElemento();
-			
-			if(actual.getId()==pId)
-			{
-				return actual;
-			}
+			retorno[i] = (Comparendo) n.darElemento();
+			i++;
 		}
-		return null;
+		
+		return retorno;
 	}
-	
-	/**
-	 * Elimina y retorna una infracción con un id recibido por parámetro
-	 * @param pId ID de la infraccion a eliminar
-	 * @return infraccion eliminada, null si no está la infraccion
-	 */
-	public Infraccion eliminar(int pId)
+
+	public void shellSort(Comparable datos[])
 	{
-		Infraccion inf = buscar(pId);
-		return (Infraccion) lista.eliminar(inf);
+		int N = datos.length; 
+		int h = 1; 
+		while (h < N/3) h = 3*h + 1; 
+		while (h >= 1) 
+		{ 
+			for (int i = h; i < N; i++) 
+			{ 
+				for (int j = i; j >= h && mayor(datos[j], datos[j-h]); j -= h) 
+					exch(datos, j, j-h); 
+			} 
+			h = h/3; 
+		}
+	} 
+
+	public boolean less(Comparable v, Comparable w) 
+	{ 
+		return v.compareTo(w) < 0; 
 	}
 	
-	/**
-	 * Retona el tamaño de la lista
-	 * @return tamaño de la lista
-	 */
-	public int darTamano()
+	public boolean mayor(Comparable v, Comparable w) 
+	{ 
+		return v.compareTo(w) > 0; 
+	}
+
+	public void exch(Comparable[] datos, int i, int j) 
+	{ 
+		Comparable t = datos[i]; datos[i] = datos[j]; datos[j] = t; 
+	}
+
+	public void merge(Comparable[] datos, Comparable[] aux, int lo, int mid, int hi)
+	{ 
+		int i = lo, j = mid+1; 
+		for (int k = lo; k <= hi; k++) 
+		{ 
+			if (i > mid) aux[k] = datos[j++]; 
+			else if (j > hi) aux[k] = datos[i++]; 
+			else if (mayor(datos[j], datos[i])) aux[k] = datos[j++]; 
+			else aux[k] = datos[i++]; 
+		} 
+	}
+
+	public void mergeSort(Comparable[] datos, Comparable[] aux, int lo, int hi) 
+	{ 
+		if (hi <= lo) return; 
+		int mid = lo + (hi - lo) / 2; 
+		mergeSort (aux, datos, lo, mid); 
+		mergeSort (aux, datos, mid+1, hi); 
+		merge(datos, aux, lo, mid, hi); 
+	}
+
+	public void quickSort(Comparable[] datos) 
+	{ 
+		StdRandom.shuffle(datos);  
+		quickSort(datos, 0, datos.length - 1); 
+	}
+
+	public void quickSort(Comparable[] datos, int lo, int hi) 
+	{ 
+		if (hi <= lo) return; 
+		int j = partition(datos, lo, hi); 
+		quickSort(datos, lo, j-1);  
+		quickSort(datos, j+1, hi);  
+	}
+
+	public int partition(Comparable[] datos, int lo, int hi) 
+	{ 
+		int i = lo, j = hi+1;  
+		Comparable v = datos[lo]; 
+		while (true) 
+		{ 
+			while (mayor(datos[++i], v)) if (i == hi) break; 
+			while (mayor(v, datos[--j])) if (j == lo) break; 
+			if (i >= j) break; 
+				exch(datos, i, j);
+		}
+		exch(datos, lo, j); 
+		return j; 
+	}
+	
+	public ListaEncadenada darLista()
 	{
-		return lista.darTamano();
-	}
-	
-	/**
-	 * Agrega una infracción recibida por parámetro al final de la lista
-	 * @param pInf infracción a agregar
-	 */
-	public void agregarFinal(Infraccion pInf)
-	{
-		lista.agregarFinal(pInf);
-	}
-	
-	/**
-	 * Agrega una infracción rebida por parámetro al inicio de la lista
-	 * @param pInf nfracción a agregar
-	 */
-	public void agregarInicio(Infraccion pInf)
-	{
-		lista.agregarInicio(pInf);
-	}
-	
-	/**
-	 * retorna la lista encadenada
-	 * @return lista encadenada
-	 */
-	public ListaEncadenada darLista() {
 		return lista;
 	}
+	
+	
 }

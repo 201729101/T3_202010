@@ -1,62 +1,59 @@
-package model.logic;
+package model.data_structures;
 
 import java.util.Date;
 
-/**
- * Clase de una infracción de transito
- */
-public class Infraccion implements Comparable
+public class Comparendo implements Comparable<Comparendo>
 {
 	/**
 	 * ID del comparendo
 	 */
 	private int id;
-	
+
 	/**
 	 * Fecha del comparendo en String
 	 */
-	private String fecha;
-	
+	private Date fecha;
+
 	/**
 	 * Medio de detección del comparendo
 	 */
 	private String medio;
-	
+
 	/**
 	 * Clase de vehículo comparentado
 	 */
 	private String clase;
-	
+
 	/**
 	 * Tipo de servicio del vehículo comparentado
 	 */
 	private String tipo;
-	
+
 	/**
 	 * Código de la infracción colocada
 	 */
 	private String infr;
-	
+
 	/**
 	 * Descripción del comparendo
 	 */
 	private String desc;
-	
+
 	/**
 	 * Localidad en que se colocó el comparendo
 	 */
 	private String localidad;
-	
+
 	/**
 	 * Latitud en que se colocó el comparendo
 	 */
 	private double latitud;
-	
+
 	/**
 	 * Longitud en que se colocó el comparendo
 	 */
 	private double longitud;
-	
+
 	/**
 	 * Contructor
 	 * @param pId ID del comparendo
@@ -70,7 +67,7 @@ public class Infraccion implements Comparable
 	 * @param pLat Latitud donde se puso el comparendo
 	 * @param pLong Longitud donde se puso el comparendo
 	 */
-	public Infraccion(int pId, String pFecha, String pMedio, String pClase, String pTipo, String pInfr, String pDesc, String pLoc, double pLat, double pLong)
+	public Comparendo(int pId, Date pFecha, String pMedio, String pClase, String pTipo, String pInfr, String pDesc, String pLoc, double pLat, double pLong)
 	{
 		id = pId;
 		fecha = pFecha;
@@ -83,7 +80,7 @@ public class Infraccion implements Comparable
 		latitud = pLat;
 		longitud = pLong;
 	}
-	
+
 	/**
 	 * Reotna el tipo de servicio
 	 * @return tipo de servicio
@@ -91,7 +88,7 @@ public class Infraccion implements Comparable
 	public String getTipo() {
 		return tipo;
 	}
-	
+
 	/**
 	 * Retorna la latidud 
 	 * @return latitud
@@ -99,7 +96,7 @@ public class Infraccion implements Comparable
 	public double getLatitud() {
 		return latitud;
 	}
-	
+
 	/**
 	 * Retorna la longitud
 	 * @return longitud
@@ -107,7 +104,7 @@ public class Infraccion implements Comparable
 	public double getLongitud() {
 		return longitud;
 	}
-	
+
 	/**
 	 * Retorna la descripción
 	 * @return descripción
@@ -115,15 +112,15 @@ public class Infraccion implements Comparable
 	public String getDesc() {
 		return desc;
 	}
-	
+
 	/**
 	 * Retorna la fecha
 	 * @return fecha
 	 */
-	public String getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
-	
+
 	/** 
 	 * Retorna el id
 	 * @return id
@@ -131,7 +128,7 @@ public class Infraccion implements Comparable
 	public int getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Retorna la infracción
 	 * @return infracción
@@ -139,7 +136,7 @@ public class Infraccion implements Comparable
 	public String getInfr() {
 		return infr;
 	}
-	
+
 	/**
 	 * Retorna el medio
 	 * @return medio
@@ -147,7 +144,7 @@ public class Infraccion implements Comparable
 	public String getMedio() {
 		return medio;
 	}
-	
+
 	/**
 	 * Retorna la clase
 	 * @return clase
@@ -155,7 +152,7 @@ public class Infraccion implements Comparable
 	public String getClase() {
 		return clase;
 	}
-	
+
 	/**
 	 * Retorna la localidad
 	 * @return
@@ -163,31 +160,24 @@ public class Infraccion implements Comparable
 	public String getLocalidad() {
 		return localidad;
 	}
-	
-	
+
+
 	@Override
-	/**
-	 * Compara dos infracciones por su ID, 
-	 * @return 0 si son iguales, -1 si no 
-	 */
-	public int compareTo(Object o) {
-		try
+	public int compareTo(Comparendo arg0) {
+		if(arg0.getFecha().compareTo(this.fecha)==0)
 		{
-			Infraccion inf = (Infraccion) o;
-			if(inf.id==this.id)
+			if(arg0.getId()==this.id)
 			{
 				return 0;
 			}
 			else
 			{
-				return -1;
+				return arg0.getId()>this.id? -1:1;
 			}
 		}
-		catch(Exception e)
+		else
 		{
-			e.printStackTrace();
-			return -1;
+			return arg0.getFecha().compareTo(this.fecha);
 		}
 	}
-
 }
