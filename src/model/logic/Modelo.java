@@ -355,7 +355,7 @@ public class Modelo
 		{ 
 			for (int i = h; i < N; i++) 
 			{ 
-				for (int j = i; j >= h && mayor(datos[j], datos[j-h]); j -= h) 
+				for (int j = i; j >= h && less(datos[j], datos[j-h]); j -= h) 
 					exch(datos, j, j-h); 
 			} 
 			h = h/3; 
@@ -384,7 +384,7 @@ public class Modelo
 		{ 
 			if (i > mid) aux[k] = datos[j++]; 
 			else if (j > hi) aux[k] = datos[i++]; 
-			else if (mayor(datos[j], datos[i])) aux[k] = datos[j++]; 
+			else if (less(datos[j], datos[i])) aux[k] = datos[j++]; 
 			else aux[k] = datos[i++]; 
 		} 
 	}
@@ -418,8 +418,8 @@ public class Modelo
 		Comparable v = datos[lo]; 
 		while (true) 
 		{ 
-			while (mayor(datos[++i], v)) if (i == hi) break; 
-			while (mayor(v, datos[--j])) if (j == lo) break; 
+			while (less(datos[++i], v)) if (i == hi) break; 
+			while (less(v, datos[--j])) if (j == lo) break; 
 			if (i >= j) break; 
 				exch(datos, i, j);
 		}

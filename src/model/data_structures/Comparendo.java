@@ -164,7 +164,7 @@ public class Comparendo implements Comparable<Comparendo>
 
 	@Override
 	public int compareTo(Comparendo arg0) {
-		if(arg0.getFecha().compareTo(this.fecha)==0)
+		if(this.fecha.compareTo(arg0.getFecha())==0)
 		{
 			if(arg0.getId()==this.id)
 			{
@@ -177,7 +177,7 @@ public class Comparendo implements Comparable<Comparendo>
 		}
 		else
 		{
-			return arg0.getFecha().compareTo(this.fecha);
+			return this.fecha.compareTo(arg0.getFecha());
 		}
 	}
 }

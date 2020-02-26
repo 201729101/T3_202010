@@ -60,7 +60,7 @@ public class Controller {
 
 			case 3:
 				Comparable[] pruebaMS = modelo.copiarComparendos();
-				Comparable[] aux = pruebaMS;
+				Comparable[] aux = modelo.copiarComparendos();
 				long startTime1 = System.currentTimeMillis();
 				modelo.mergeSort(pruebaMS, aux, 0, pruebaMS.length-1);
 				long endTime1 = System.currentTimeMillis();          
