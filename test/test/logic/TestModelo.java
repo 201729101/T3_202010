@@ -37,7 +37,9 @@ public class TestModelo {
 		{
 			arregloA[i]=i;
 			arregloD[1000000-i-1]=1000000-i-1;
-			arregloO[i] = (int) Math.random()*1000000;
+			double p = Math.random()*1000000;
+			int po = (int) p;
+			arregloO[i] = po;
 		}
 	}
 
@@ -70,14 +72,11 @@ public class TestModelo {
 		long durationO = endTimeO - startTimeO; 
 		System.out.println("Shell Sort Aleatorio: " + durationO);
 		
-		System.out.println(arregloA.toString());
-		
-		for(int i = 0; i<100 ; i++)
+		for(int i = 1; i<100000 ; i++)
 		{
-//			assertEquals(i,(int) arregloA[i]);
-//			assertEquals(i,(int) arregloD[i]);
-//			assertEquals(i,(int) arregloO[i]);
-			System.out.println(arregloA[i] +"'"+ arregloD[i] +"'"+ arregloO[i]);
+			assertEquals(i,(int) arregloA[i]);
+			assertEquals(i,(int) arregloD[i]);
+			assertTrue(((int) arregloO[i])>=((int) arregloO[i-1]));
 		}
 	}
 	
@@ -107,12 +106,12 @@ public class TestModelo {
 		long durationO = endTimeO - startTimeO;
 		System.out.println("Merge Sort Aleatorio: " + durationO);
 		
-//		for(int i = 0; i<1000000 ; i++)
-//		{
-//			assertEquals(i,(int) arregloA[i]);
-//			assertEquals(i,(int) arregloD[i]);
-//			assertEquals(i,(int) arregloO[i]);
-//		}
+		for(int i = 1; i<100000 ; i++)
+		{
+			assertEquals(i,(int) arregloA[i]);
+			assertEquals(i,(int) arregloD[i]);
+			assertTrue(((int) arregloO[i])>=((int) arregloO[i-1]));
+		}
 	}
 	
 	@Test
@@ -137,11 +136,11 @@ public class TestModelo {
 		long durationO = endTimeO - startTimeO; 
 		System.out.println("Quick Sort Aleatorio: " + durationO);
 		
-//		for(int i = 0; i<1000000 ; i++)
-//		{
-//			assertEquals(i,(int) arregloA[i]);
-//			assertEquals(i,(int) arregloD[i]);
-//			assertEquals(i,(int) arregloO[i]);
-//		}
+		for(int i = 1; i<100000 ; i++)
+		{
+			assertEquals(i,(int) arregloA[i]);
+			assertEquals(i,(int) arregloD[i]);
+			assertTrue(((int) arregloO[i])>=((int) arregloO[i-1]));
+		}
 	}
 }
